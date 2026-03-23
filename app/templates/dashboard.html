@@ -4,40 +4,263 @@
   <meta charset="UTF-8">
   <title>可信数据交易平台原型</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 24px; background: #fafafa; color: #222; }
-    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
-    .card { background: white; padding: 16px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
-    table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; }
-    th, td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
-    a { color: #0057b8; text-decoration: none; }
-    code { background: #f4f4f4; padding: 2px 6px; border-radius: 6px; }
+    :root {
+      --bg-start: #0f172a;
+      --bg-end: #1d4ed8;
+      --panel: rgba(255, 255, 255, 0.12);
+      --panel-strong: rgba(255, 255, 255, 0.18);
+      --card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --white: #ffffff;
+      --accent: #38bdf8;
+      --border: rgba(148, 163, 184, 0.25);
+      --shadow: 0 20px 45px rgba(15, 23, 42, 0.22);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      color: var(--white);
+    }
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 36px 24px 48px;
+    }
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 28px;
+      padding: 28px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.55), rgba(30, 41, 59, 0.32));
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      color: rgba(255, 255, 255, 0.82);
+      line-height: 1.7;
+    }
+    .hero-badge {
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    code {
+      background: rgba(15, 23, 42, 0.45);
+      color: #e0f2fe;
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      padding: 22px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08));
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+    .stat-card .label {
+      margin-bottom: 12px;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 14px;
+      letter-spacing: 0.04em;
+    }
+    .stat-card .value {
+      font-size: 30px;
+      font-weight: 700;
+    }
+    .panel {
+      background: var(--card);
+      color: var(--text-main);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 24px 24px 12px;
+    }
+    .panel-header h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .panel-header p {
+      margin: 6px 0 0;
+      color: var(--text-muted);
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-weight: 600;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    thead {
+      background: #f8fafc;
+    }
+    th, td {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: left;
+      vertical-align: top;
+    }
+    tbody tr:hover {
+      background: #f8fbff;
+    }
+    th {
+      color: #334155;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    td {
+      color: var(--text-main);
+    }
+    a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .muted {
+      color: var(--text-muted);
+    }
+    .price-badge {
+      display: inline-block;
+      margin: 0 8px 8px 0;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: #eff6ff;
+      color: #1e40af;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    @media (max-width: 900px) {
+      .hero, .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 640px) {
+      .page {
+        padding: 20px 14px 30px;
+      }
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      th, td {
+        padding: 14px 12px;
+      }
+      .hero h1 {
+        font-size: 28px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>可信数据交易平台原型</h1>
-  <p>研究原型首页。建议先调用 <code>POST /api/seed-demo</code> 初始化演示数据。</p>
-  <div class="grid">
-    <div class="card"><h3>用户数</h3><div>{{ stats.users }}</div></div>
-    <div class="card"><h3>资产数</h3><div>{{ stats.assets }}</div></div>
-    <div class="card"><h3>订单数</h3><div>{{ stats.orders }}</div></div>
-    <div class="card"><h3>账本校验</h3><div>{{ '通过' if stats.chain.ok else '失败' }}</div></div>
+  <div class="page">
+    <section class="hero">
+      <div>
+        <h1>可信数据交易平台原型</h1>
+        <p>
+          面向答辩展示的可运行研究原型，聚焦动态定价、属性控制授权、链下加密存储与可审计账本。
+          建议先调用 <code>POST /api/seed-demo</code> 初始化演示数据，再刷新此页面查看样例资产与订单统计。
+        </p>
+      </div>
+      <div class="hero-badge">Trusted Data Trading Demo</div>
+    </section>
+
+    <section class="grid">
+      <div class="stat-card">
+        <div class="label">平台用户数</div>
+        <div class="value">{{ stats.users }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">已发布资产</div>
+        <div class="value">{{ stats.assets }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">订单总数</div>
+        <div class="value">{{ stats.orders }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">账本校验状态</div>
+        <div class="value">{{ '通过' if stats.chain.ok else '失败' }}</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h2>资产列表</h2>
+          <p>点击资产标题可进入详情页，查看授权模板、价格与访问属性要求。</p>
+        </div>
+        <div class="chip">已授权订单：{{ stats.authorized_orders }}</div>
+      </div>
+
+      <table>
+        <thead>
+          <tr><th>ID</th><th>标题</th><th>类别</th><th>场景</th><th>模板价格</th></tr>
+        </thead>
+        <tbody>
+          {% for asset in assets %}
+          <tr>
+            <td>{{ asset.id }}</td>
+            <td>
+              <a href="/assets/{{ asset.id }}">{{ asset.title }}</a>
+              <div class="muted">{{ asset.description[:60] }}{% if asset.description|length > 60 %}...{% endif %}</div>
+            </td>
+            <td>{{ asset.category }}</td>
+            <td>{{ asset.scenario }}</td>
+            <td>
+              {% for t in asset.templates %}
+              <span class="price-badge">{{ t.name }} · ¥{{ t.price }}</span>
+              {% endfor %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
   </div>
-  <h2>资产列表</h2>
-  <table>
-    <thead>
-      <tr><th>ID</th><th>标题</th><th>类别</th><th>场景</th><th>模板价格</th></tr>
-    </thead>
-    <tbody>
-      {% for asset in assets %}
-      <tr>
-        <td>{{ asset.id }}</td>
-        <td><a href="/assets/{{ asset.id }}">{{ asset.title }}</a></td>
-        <td>{{ asset.category }}</td>
-        <td>{{ asset.scenario }}</td>
-        <td>{% for t in asset.templates %}{{ t.name }}: {{ t.price }} {% if not loop.last %}|{% endif %}{% endfor %}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
 </body>
 </html>
