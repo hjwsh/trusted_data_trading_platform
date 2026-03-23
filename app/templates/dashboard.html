@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>可信数据交易平台原型</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; background: #fafafa; color: #222; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+    .card { background: white; padding: 16px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; }
+    th, td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
+    a { color: #0057b8; text-decoration: none; }
+    code { background: #f4f4f4; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>可信数据交易平台原型</h1>
+  <p>研究原型首页。建议先调用 <code>POST /api/seed-demo</code> 初始化演示数据。</p>
+  <div class="grid">
+    <div class="card"><h3>用户数</h3><div>{{ stats.users }}</div></div>
+    <div class="card"><h3>资产数</h3><div>{{ stats.assets }}</div></div>
+    <div class="card"><h3>订单数</h3><div>{{ stats.orders }}</div></div>
+    <div class="card"><h3>账本校验</h3><div>{{ '通过' if stats.chain.ok else '失败' }}</div></div>
+  </div>
+  <h2>资产列表</h2>
+  <table>
+    <thead>
+      <tr><th>ID</th><th>标题</th><th>类别</th><th>场景</th><th>模板价格</th></tr>
+    </thead>
+    <tbody>
+      {% for asset in assets %}
+      <tr>
+        <td>{{ asset.id }}</td>
+        <td><a href="/assets/{{ asset.id }}">{{ asset.title }}</a></td>
+        <td>{{ asset.category }}</td>
+        <td>{{ asset.scenario }}</td>
+        <td>{% for t in asset.templates %}{{ t.name }}: {{ t.price }} {% if not loop.last %}|{% endif %}{% endfor %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "functional": {
+    "seed_demo": true,
+    "publish_success": true,
+    "order_create_success": true,
+    "authorized_access": true,
+    "unauthorized_blocked": true,
+    "download_hash_match": true,
+    "revocation_blocked": true,
+    "ledger_ok": true,
+    "audit_log_count": 20
+  },
+  "pricing_points": [
+    [
+      "Basic-30D",
+      214.12
+    ],
+    [
+      "Extended-180D",
+      290.86
+    ]
+  ],
+  "performance": {
+    "publish_mean_s": 0.0238,
+    "order_mean_s": 0.0189,
+    "download_mean_s": 0.0662
+  },
+  "artifact_refs": {
+    "asset_id": 6,
+    "order_id": 6,
+    "outsider_order_id": 7
+  }
+}
